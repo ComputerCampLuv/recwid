@@ -1,3 +1,6 @@
+mod api;
+mod product;
+
 #[cfg(test)]
 mod tests {
     #[test]
