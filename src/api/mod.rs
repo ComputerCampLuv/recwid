@@ -1,1 +1,1 @@
-mod products;
+pub mod products;

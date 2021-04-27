@@ -1,1 +1,1 @@
-mod search_products;
+pub mod search_products;
