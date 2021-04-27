@@ -1,7 +1,7 @@
 pub mod api;
 mod client;
 mod dispatchable;
-mod product;
+pub mod product;
 
 pub use client::Client;
 

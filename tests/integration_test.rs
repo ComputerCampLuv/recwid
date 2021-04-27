@@ -10,6 +10,7 @@ fn test_client() {
 #[test]
 fn test_search_products() {
     use recwid::api::products::search_products::response::Response;
+    use recwid::product::Product;
 
     let server = MockServer::start();
     let mock = server.mock(|when, then| {
@@ -19,12 +20,21 @@ fn test_search_products() {
             .query_param("limit", "1");
         // .header("Accept", "application/json")
         then.status(200).json_body(json!({
-            "total": 1
+            "total": 1,
+            "items": [
+                { "id": 101 }
+            ]
         }));
     });
     let client = recwid::Client::new_with_base_url("mock-id", "mock-token", &server.base_url());
     let response = client.search_products().limit(1).send();
 
     mock.assert();
-    assert_eq!(response, Response { total: 1 });
+    assert_eq!(
+        response,
+        Response {
+            total: 1,
+            items: vec![Product { id: 101 }],
+        }
+    );
 }
