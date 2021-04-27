@@ -4,4 +4,10 @@ use serde::{Deserialize, Serialize};
 #[serde(rename_all = "camelCase")]
 pub struct Product {
     pub id: u64,
+    pub sku: String,
+    pub name: String,
+    pub price: f32,
+    pub in_stock: bool,
+    pub enabled: bool,
+    pub is_gift_card: bool,
 }

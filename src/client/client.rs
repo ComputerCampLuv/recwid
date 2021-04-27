@@ -1,6 +1,6 @@
 use crate::dispatchable::{Dispatchable, Method};
-use reqwest::blocking::Client as Connection;
-use reqwest::blocking::Response;
+use reqwest::blocking::{Client as Connection, Response};
+use reqwest::header::ACCEPT;
 use serde::de::DeserializeOwned;
 use serde::Serialize;
 
@@ -47,7 +47,11 @@ impl Client {
             request.path(),
             self.token
         );
-        self.conn.get(url).send().unwrap()
+        self.conn
+            .get(url)
+            .header(ACCEPT, "application/json")
+            .send()
+            .unwrap()
     }
 }
 

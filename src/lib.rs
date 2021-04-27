@@ -4,6 +4,7 @@ mod dispatchable;
 pub mod product;
 
 pub use client::Client;
+pub use product::Product;
 
 #[cfg(test)]
 mod test {
