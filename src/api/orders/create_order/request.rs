@@ -2,16 +2,12 @@ use crate::dispatchable::{Dispatchable, Method};
 use std::collections::HashMap;
 
 pub struct Request {
-    query_string: String,
     body: HashMap<String, String>,
 }
 
 impl Request {
-    pub fn new(query: &Vec<String>) -> Self {
-        let query_string = query.join("&");
-
+    pub fn new() -> Self {
         Request {
-            query_string,
             body: HashMap::new(),
         }
     }
@@ -19,11 +15,11 @@ impl Request {
 
 impl Dispatchable for Request {
     fn path(&self) -> String {
-        format!("products?{}", self.query_string)
+        String::from("orders?")
     }
 
     fn method(&self) -> Method {
-        Method::Get
+        Method::Post
     }
 
     fn body(&self) -> &HashMap<String, String> {

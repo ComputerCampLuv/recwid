@@ -20,6 +20,16 @@ impl<'c> RequestBuilder<'c> {
         self
     }
 
+    pub fn in_stock(&mut self, in_stock: bool) -> &mut Self {
+        self.query.push(format!("inStock={}", in_stock));
+        self
+    }
+
+    pub fn enabled(&mut self, enabled: bool) -> &mut Self {
+        self.query.push(format!("enabled={}", enabled));
+        self
+    }
+
     pub fn send(&self) -> Response {
         self.client.dispatch(self.build())
     }

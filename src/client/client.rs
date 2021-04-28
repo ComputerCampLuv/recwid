@@ -1,6 +1,6 @@
 use crate::dispatchable::{Dispatchable, Method};
 use reqwest::blocking::{Client as Connection, Response};
-use reqwest::header::ACCEPT;
+use reqwest::header::{ACCEPT, CONTENT_TYPE};
 use serde::de::DeserializeOwned;
 use serde::Serialize;
 
@@ -34,9 +34,28 @@ impl Client {
     pub fn dispatch<T: Serialize + DeserializeOwned>(&self, request: impl Dispatchable) -> T {
         let response = match request.method() {
             Method::Get => self.get(request),
-            _ => panic!("Method not implemented!"),
+            Method::Post => self.post(request),
+            // _ => panic!("Method not implemented!"),
         };
         response.json::<T>().unwrap()
+    }
+
+    fn post(&self, request: impl Dispatchable) -> Response {
+        let url = format!(
+            "{}/{}/{}token={}",
+            self.base_url,
+            self.id,
+            request.path(),
+            self.token
+        );
+
+        self.conn
+            .post(url)
+            .header(ACCEPT, "application/json")
+            .header(CONTENT_TYPE, "application/json")
+            .json(request.body())
+            .send()
+            .unwrap()
     }
 
     fn get(&self, request: impl Dispatchable) -> Response {
