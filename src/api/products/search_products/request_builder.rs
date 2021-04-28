@@ -3,7 +3,7 @@ use super::Response;
 use crate::Client;
 
 pub struct RequestBuilder<'c> {
-    query: Vec<String>,
+    query: Vec<(String, String)>,
     client: &'c Client,
 }
 
@@ -16,7 +16,17 @@ impl<'c> RequestBuilder<'c> {
     }
 
     pub fn limit(&mut self, limit: u32) -> &mut Self {
-        self.query.push(format!("limit={}", limit));
+        self.query.push(("limit".to_owned(), limit.to_string()));
+        self
+    }
+
+    pub fn in_stock(&mut self, in_stock: bool) -> &mut Self {
+        self.query.push(("inStock".to_owned(), in_stock.to_string()));
+        self
+    }
+
+    pub fn enabled(&mut self, enabled: bool) -> &mut Self {
+        self.query.push(("enabled".to_owned(), enabled.to_string()));
         self
     }
 
@@ -25,6 +35,6 @@ impl<'c> RequestBuilder<'c> {
     }
 
     fn build(&self) -> Request {
-        Request::new(&self.query)
+        Request::new(self.query.clone())
     }
 }

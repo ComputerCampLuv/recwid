@@ -1,7 +1,6 @@
 use crate::dispatchable::{Dispatchable, Method};
-// use std::collections::HashMap;
-use serde_json::json;
 use serde_json::Value;
+
 
 pub struct Request {
     body: Value,
@@ -9,30 +8,26 @@ pub struct Request {
 }
 
 impl Request {
-    pub fn new(query: Vec<(String, String)>) -> Self {
+    pub fn new(body: Value) -> Self {
         Request {
-            body: json!({}),
-            query,
+            body,
+            query: Vec::new(),
         }
     }
 }
 
 impl Dispatchable for Request {
     fn path(&self) -> String {
-        String::from("products")
+        String::from("orders?")
     }
 
     fn method(&self) -> Method {
-        Method::Get
+        Method::Post
     }
 
-    fn body(&self) -> &Value {
+    fn body(&self) -> &serde_json::Value {
         &self.body
     }
-
-    // fn body(&self) -> &HashMap<String, String> {
-    //     &self.body
-    // }
 
     fn query(&self) -> &Vec<(String, String)> {
         &self.query

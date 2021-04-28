@@ -6,7 +6,7 @@ pub struct Product {
     pub id: u64,
     pub sku: String,
     pub name: String,
-    pub price: f32,
+    pub price: f64,
     pub in_stock: bool,
     pub enabled: bool,
     pub is_gift_card: bool,
