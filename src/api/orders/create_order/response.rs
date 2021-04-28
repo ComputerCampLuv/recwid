@@ -4,4 +4,5 @@ use serde::{Deserialize, Serialize};
 #[serde(rename_all = "camelCase")]
 pub struct Response {
     pub id: u32,
+    pub order_id: String,
 }

@@ -35,40 +35,35 @@ impl Client {
         let response = match request.method() {
             Method::Get => self.get(request),
             Method::Post => self.post(request),
-            // _ => panic!("Method not implemented!"),
         };
+        println!("RESPONSE: {:?}", response);
         response.json::<T>().unwrap()
     }
 
     fn post(&self, request: impl Dispatchable) -> Response {
-        let url = format!(
-            "{}/{}/{}token={}",
-            self.base_url,
-            self.id,
-            request.path(),
-            self.token
-        );
+        let url = format!("{}/{}/{}", self.base_url, self.id, request.path());
+
+        println!("URL: {}", url);
+        println!("BODY: {}", request.body());
 
         self.conn
             .post(url)
             .header(ACCEPT, "application/json")
             .header(CONTENT_TYPE, "application/json")
-            .json(request.body())
+            .query(&[("token", &self.token)])
+            .json(&request.body())
             .send()
             .unwrap()
     }
 
     fn get(&self, request: impl Dispatchable) -> Response {
-        let url = format!(
-            "{}/{}/{}&token={}",
-            self.base_url,
-            self.id,
-            request.path(),
-            self.token
-        );
+        let url = format!("{}/{}/{}", self.base_url, self.id, request.path());
+
         self.conn
             .get(url)
             .header(ACCEPT, "application/json")
+            .query(&[("token", &self.token)])
+            .query(&request.query())
             .send()
             .unwrap()
     }

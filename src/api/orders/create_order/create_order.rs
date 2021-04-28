@@ -6,3 +6,18 @@ impl Client {
         RequestBuilder::default(self)
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn test_create_order() {
+        let client = Client::new("id", "token");
+
+        assert_eq!(
+            client.create_order(),
+            RequestBuilder::default(&client),
+        );
+    }
+}

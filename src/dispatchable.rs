@@ -1,5 +1,3 @@
-use std::collections::HashMap;
-
 pub enum Method {
     Get,
     Post,
@@ -10,5 +8,7 @@ pub trait Dispatchable {
 
     fn method(&self) -> Method;
 
-    fn body(&self) -> &HashMap<String, String>;
+    fn body(&self) -> &serde_json::Value;
+
+    fn query(&self) -> &Vec<(String, String)>;
 }
